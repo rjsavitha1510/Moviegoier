@@ -1,0 +1,21 @@
+package com.example.moviegoier.Repository;
+
+import java.util.List;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.moviegoier.Entity.ShowEntity;
+@Repository
+public interface ShowRepo extends JpaRepository<ShowEntity, Integer>,PagingAndSortingRepository<ShowEntity,Integer>{
+List<ShowEntity>findAll();
+
+List<ShowEntity>findByScreenidStartingWith(String screenid);
+List<ShowEntity>findByScreenidEndingWith(String screenid);
+List<ShowEntity>findByScreenidContaining(String screenid);
+List<ShowEntity>findByScreenidNotContaining(String screenid);
+
+
+}
