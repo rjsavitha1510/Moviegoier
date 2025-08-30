@@ -1,0 +1,15 @@
+package com.example.moviegoier.Repository;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import com.example.moviegoier.Entity.NameEntity;
+public interface NameRepo extends JpaRepository<NameEntity, Integer>,PagingAndSortingRepository<NameEntity, Integer>{
+	List<NameEntity>findAll();
+	
+	List<NameEntity>findByNameStartingWith(String name);
+	List<NameEntity>findByNameEndingWith(String name);
+	List<NameEntity>findByNameContaining(String name);
+	List<NameEntity>findByNameNotContaining(String name);
+	
+}
