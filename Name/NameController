@@ -1,0 +1,70 @@
+package com.example.moviegoier.Controller;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import com.example.moviegoier.Entity.NameEntity;
+import com.example.moviegoier.Service.NameService;
+@RestController
+
+public class NameController {
+	@Autowired NameService ser;
+
+	@GetMapping("/getnames")
+	public List<NameEntity> disp()
+	{
+		return ser.show();
+	}
+
+	@PostMapping("/postnames")
+	public NameEntity pos(@RequestBody NameEntity obj)
+	{
+		return ser.post(obj);
+	}
+
+	@DeleteMapping("/delnames/{userid}")
+	public String del(@PathVariable int userid)
+	{
+		return ser.deleteid(userid);
+	}
+
+	@PutMapping("/putname/{userid}")
+	public NameEntity updateby(@PathVariable int userid,@RequestBody NameEntity us)
+	{
+		return ser.update(userid, us);
+	}
+
+	@GetMapping("/page")
+	public Page<NameEntity>pages(@RequestParam int page,@RequestParam int size)
+	{
+		return ser.getdata(page, size);
+	}
+	
+	@GetMapping("/startwith")
+	public List<NameEntity>start(String name)
+	   {
+		   return ser.start(name);
+	   }
+	@GetMapping("/endwith")
+	public List<NameEntity>end(String name)
+	   {
+		   return ser.end(name);
+	   }
+	@GetMapping("/containsdata")
+public List<NameEntity>containing(String name)
+{
+	   return ser.containing(name);
+}
+	@GetMapping("/notcontainsdata")
+public List<NameEntity>notcontain(String name)
+{
+	   return ser.notcontain(name);
+}
+}
