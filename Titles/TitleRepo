@@ -1,0 +1,19 @@
+package com.example.moviegoier.Repository;
+
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.moviegoier.Entity.TitleEntity;
+
+@Repository
+public interface TitleRepo extends JpaRepository<TitleEntity, Integer>,PagingAndSortingRepository<TitleEntity,Integer>{
+List<TitleEntity>findAll();
+
+    List<TitleEntity>findByGenreStartingWith(String genre);
+	List<TitleEntity>findByGenreEndingWith(String genre);
+	List<TitleEntity>findByGenreContaining(String genre);
+	List<TitleEntity>findByGenreNotContaining(String genre);
+
+}
