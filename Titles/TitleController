@@ -1,0 +1,72 @@
+package com.example.moviegoier.Controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.moviegoier.Entity.TitleEntity;
+import com.example.moviegoier.Service.TitleService;
+
+@RestController
+public class TitleController {
+@Autowired TitleService se;
+
+	@GetMapping("/gettitle")
+	public List<TitleEntity> disp()
+	{
+		return se.show();
+	}
+
+	@PostMapping("/posttitle")
+	public TitleEntity pos(@RequestBody TitleEntity obj)
+	{
+		return se.post(obj);
+	}
+	
+	@DeleteMapping("/deltitle/{movieid}")
+	public String del(@PathVariable int movieid)
+	{
+		return se.deleteid(movieid);
+	}
+	
+	@PutMapping("/puttitle/{movieid}")
+	public TitleEntity updateby(@PathVariable int movieid,@RequestBody TitleEntity us)
+	{
+		return se.update(movieid, us);
+	}
+	
+	@GetMapping("/pagegenre")
+	public Page<TitleEntity>pages(@RequestParam int page,@RequestParam int size)
+	{
+		return se.getdata(page, size);
+	}
+	
+	@GetMapping("/startgenre")
+	public List<TitleEntity>start(String genre)
+	   {
+		   return se.start(genre);
+	   }
+	@GetMapping("/endgenre")
+	public List<TitleEntity>end(String genre)
+	   {
+		   return se.end(genre);
+	   }
+	@GetMapping("/containsgenre")
+public List<TitleEntity>containing(String genre)
+{
+	   return se.containing(genre);
+}
+	@GetMapping("/notcontainsgenre")
+public List<TitleEntity>notcontain(String genre)
+{
+	   return se.notcontain(genre);
+}
+}
