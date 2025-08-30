@@ -1,0 +1,72 @@
+package com.example.moviegoier.Controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.moviegoier.Entity.ShowEntity;
+import com.example.moviegoier.Service.ShowService;
+
+@RestController
+public class ShowController {
+@Autowired ShowService sk;
+
+	@GetMapping("/getshow")
+	public List<ShowEntity> disp()
+	{
+		return sk.show();
+	}
+	
+	@PostMapping("/postshow")
+	public ShowEntity pos(@RequestBody ShowEntity obj)
+	{
+		return sk.post(obj);
+	}
+	
+	@DeleteMapping("/delshow/{showtimeid}")
+	public String del(@PathVariable int showtimeid)
+	{
+		return sk.deleteid(showtimeid);
+	}
+	
+	@PutMapping("/putshow/{showtimeid}")
+	public ShowEntity updateby(@PathVariable int showtimeid,@RequestBody ShowEntity us)
+	{
+		return sk.update(showtimeid, us);
+	}
+      
+	@GetMapping("/pagescreen")
+	public Page<ShowEntity>pages(@RequestParam int page,@RequestParam int size)
+	{
+		return sk.getdata(page, size);
+	}
+	
+	@GetMapping("/startscreen")
+	public List<ShowEntity>start(String screenid)
+	   {
+		   return sk.start(screenid);
+	   }
+	@GetMapping("/endscreen")
+	public List<ShowEntity>end(String screenid)
+	   {
+		   return sk.end(screenid);
+	   }
+	@GetMapping("/containsscreen")
+public List<ShowEntity>containing(String screenid)
+{
+	   return sk.containing(screenid);
+}
+	@GetMapping("/notcontainsscreen")
+public List<ShowEntity>notcontain(String screenid)
+{
+	   return sk.notcontain(screenid);
+}
+}
