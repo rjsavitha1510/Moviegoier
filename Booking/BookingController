@@ -1,0 +1,54 @@
+package com.example.moviegoier.Controller;
+
+import java.util.List;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.moviegoier.Entity.BookingEntity;
+import com.example.moviegoier.Service.BookingService;
+@RestController
+
+public class BookingController {
+@Autowired BookingService bc;
+
+	@GetMapping("/getbook")
+	public List<BookingEntity> disp()
+	{
+		return bc.show();
+	}
+	
+	@PostMapping("/postbook")
+	public BookingEntity pos(@RequestBody BookingEntity obj)
+	{
+		return bc.pos(obj);
+	}
+
+	
+	@PostMapping("/sentmail")
+	public String posts(@RequestParam String moviegoier, @RequestParam String subject, @RequestParam String body )
+	{
+		return bc.sendmail(moviegoier, subject, body);
+	}
+
+	
+	@DeleteMapping("/delbook/{bookingid}")
+	public String del(@PathVariable int bookingid)
+	{
+		return bc.deleteid(bookingid);
+	}
+	@PutMapping("/putbook/{bookingid}")
+	public BookingEntity updateby(@PathVariable int bookingid,@RequestBody BookingEntity us)
+	{
+		return bc.update(bookingid, us);
+	}
+
+}
