@@ -1,0 +1,79 @@
+package com.example.moviegoier.Service;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.moviegoier.Entity.PaymentEntity;
+import com.example.moviegoier.Repository.PaymentRepo;
+
+@Service
+public class PaymentService {
+@Autowired PaymentRepo pa;
+
+public List<PaymentEntity> show()
+{
+	 return pa.findAll();
+}
+
+public PaymentEntity post(PaymentEntity ent)
+{
+	 return pa.save(ent);
+}
+
+public String deleteid(int paymentid)
+{
+	 if(pa.existsById(paymentid))
+	 {
+		 pa.deleteById(paymentid);
+		 return "Value deleted successfully";
+	 }
+	 else
+	 {
+		 return "Value not found "+ paymentid;
+	 }
+}
+
+
+
+public PaymentEntity update(int paymentid,PaymentEntity en)
+{
+	 if(pa.existsById(paymentid))
+	 {
+		 PaymentEntity p=pa.findById(paymentid).get();
+		 p.setBookingid(en.getBookingid());
+		 p.setAmount(en.getAmount());
+		 p.setMethod(en.getMethod());
+        p.setStatus(en.getStatus());
+		 return pa.save(p);
+	 }
+	 return en;
+}
+
+public Page<PaymentEntity>getdata(int page,int size)
+{
+	PageRequest obj=PageRequest.of(page, size);
+	return pa.findAll(obj);
+}
+public List<PaymentEntity>start(String method)
+   {
+	   return pa.findByMethodStartingWith(method);
+   }
+public List<PaymentEntity>end(String method)
+   {
+	   return pa.findByMethodEndingWith(method);
+   }
+
+public List<PaymentEntity>containing(String method)
+{
+   return pa.findByMethodContaining(method);
+}
+public List<PaymentEntity>notcontain(String method)
+{
+   return pa.findByMethodNotContaining(method);
+}
+
+
+}
