@@ -1,0 +1,72 @@
+package com.example.moviegoier.Controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import com.example.moviegoier.Entity.PaymentEntity;
+import com.example.moviegoier.Service.PaymentService;
+
+@RestController
+public class PaymentController {
+@Autowired PaymentService ps;
+
+	@GetMapping("/getpay")
+	public List<PaymentEntity> disp()
+	{
+		return ps.show();
+	}
+	
+	@PostMapping("/postpay")
+	public PaymentEntity pos(@RequestBody PaymentEntity obj)
+	{
+		return ps.post(obj);
+	}
+
+	@DeleteMapping("/delpay/{paymentid}")
+	public String del(@PathVariable int paymentid)
+	{
+		return ps.deleteid(paymentid);
+	}
+
+	@PutMapping("/putpay/{paymentid}")
+	public PaymentEntity updateby(@PathVariable int paymentid,@RequestBody PaymentEntity us)
+	{
+		return ps.update(paymentid, us);
+	}
+
+	@GetMapping("/pagemethod")
+	public Page<PaymentEntity>pages(@RequestParam int page,@RequestParam int size)
+	{
+		return ps.getdata(page, size);
+	}
+	
+	@GetMapping("/startmethod")
+	public List<PaymentEntity>start(String method)
+	   {
+		   return ps.start(method);
+	   }
+	@GetMapping("/endmethod")
+	public List<PaymentEntity>end(String method)
+	   {
+		   return ps.end(method);
+	   }
+	@GetMapping("/containsmethod")
+public List<PaymentEntity>containing(String method)
+{
+	   return ps.containing(method);
+}
+	@GetMapping("/notcontainsmethod")
+public List<PaymentEntity>notcontain(String method)
+{
+	   return ps.notcontain(method);
+}
+	
+}
