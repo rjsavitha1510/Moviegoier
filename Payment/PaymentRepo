@@ -1,0 +1,16 @@
+package com.example.moviegoier.Repository;
+
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.moviegoier.Entity.PaymentEntity;
+@Repository
+public interface PaymentRepo extends JpaRepository<PaymentEntity, Integer>{
+List<PaymentEntity>findAll();
+List<PaymentEntity>findByMethodStartingWith(String method);
+List<PaymentEntity>findByMethodEndingWith(String method);
+List<PaymentEntity>findByMethodContaining(String method);
+List<PaymentEntity>findByMethodNotContaining(String method);
+
+}
