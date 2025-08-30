@@ -1,0 +1,75 @@
+package com.example.moviegoier.Service;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.moviegoier.Entity.NameEntity;
+import com.example.moviegoier.Repository.NameRepo;
+
+@Service
+
+public class NameService {
+	@Autowired NameRepo nr;
+
+	public List<NameEntity> show()
+	{
+		 return nr.findAll();
+	}
+
+	public NameEntity post(NameEntity ent)
+	{
+		return nr.save(ent);
+	}
+
+	public String deleteid(int userid)
+	{
+		 if(nr.existsById(userid))
+		 {
+			 nr.deleteById(userid);
+			 return "Value deleted successfully";
+		 }
+		 else
+		 {
+			 return "Value not found "+ userid;
+		 }
+	}
+
+	public NameEntity update(int userid,NameEntity en)
+	{
+		 if(nr.existsById(userid))
+		 {
+			 NameEntity u=nr.findById(userid).get();
+			 u.setName(en.getName());
+			 u.setEmail(en.getEmail());
+			 u.setPassword(en.getPassword());
+			 return nr.save(u);
+		 }
+		 return en;
+	}
+	
+	public Page<NameEntity>getdata(int page,int size)
+	{
+		PageRequest obj=PageRequest.of(page, size);
+		return nr.findAll(obj);
+	}
+	public List<NameEntity>start(String name)
+	   {
+		   return nr.findByNameStartingWith(name);
+	   }
+	public List<NameEntity>end(String name)
+	   {
+		   return nr.findByNameEndingWith(name);
+	   }
+	
+   public List<NameEntity>containing(String name)
+   {
+	   return nr.findByNameContaining(name);
+   }
+   public List<NameEntity>notcontain(String name)
+   {
+	   return nr.findByNameNotContaining(name);
+   }
+}
