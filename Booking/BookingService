@@ -1,0 +1,98 @@
+package com.example.moviegoier.Service;
+
+import java.util.List;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import com.example.moviegoier.Entity.BookingEntity;
+import com.example.moviegoier.Repository.BookingRepo;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+@Service
+public class BookingService {
+@Autowired BookingRepo ba;
+public List<BookingEntity> show()
+{
+	 return ba.findAll();
+}
+
+public BookingEntity pos( BookingEntity en)
+{
+	return ba.save(en);
+}
+public String deleteid(int bookingid)
+{
+	 if(ba.existsById(bookingid))
+	 {
+		 ba.deleteById(bookingid);
+		 return "Value deleted successfully";
+	 }
+	 else
+	 {
+		 return "Value not found "+ bookingid;
+	 }
+}
+
+
+
+public BookingEntity update(int bookingid,BookingEntity en)
+{
+	 if(ba.existsById(bookingid))
+	 {
+		 BookingEntity be=ba.findById(bookingid).get();
+		 be.setBody(en.getBody());
+		 be.setMoviegoier(en.getMoviegoier());
+		 be.setSubject(en.getSubject());
+		 return ba.save(be);
+	 }
+	 return en;
+}
+
+
+
+
+
+@Autowired JavaMailSender sender;
+public String sendmail(String moviegoier,String subject,String body) {
+try {
+	
+	MimeMessage message=sender.createMimeMessage();
+	MimeMessageHelper helper=new MimeMessageHelper(message);
+	
+	    
+	    helper.setTo(moviegoier);
+		helper.setSubject(subject);
+		helper.setText(body);
+		
+		sender.send(message);
+	
+	BookingEntity mail=new BookingEntity();
+	mail.setMoviegoier(moviegoier);
+	mail.setSubject(subject);
+	mail.setBody(body);
+	mail.setStatus("SENT");
+	
+	ba.save(mail);
+	return "Email sent successfully!"+moviegoier;
+} 
+catch (MessagingException e) {
+	BookingEntity mail = new BookingEntity();
+    mail.setMoviegoier(moviegoier);
+    mail.setSubject(subject);
+    mail.setBody(body);
+    mail.setStatus("FAILED");
+
+    ba.save(mail);
+
+    return "Email sending failed: " + e.getMessage();
+	}
+}
+
+
+
+}
