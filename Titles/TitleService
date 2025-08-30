@@ -1,0 +1,75 @@
+package com.example.moviegoier.Service;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.moviegoier.Entity.TitleEntity;
+import com.example.moviegoier.Repository.TitleRepo;
+@Service
+public class TitleService {
+@Autowired TitleRepo ti;
+
+public List<TitleEntity> show()
+{
+	 return ti.findAll();
+}
+
+public TitleEntity post(TitleEntity ent)
+{
+	 return ti.save(ent);
+}
+
+public String deleteid(int movieid)
+{
+	 if(ti.existsById(movieid))
+	 {
+		 ti.deleteById(movieid);
+		 return "Value deleted successfully";
+	 }
+	 else
+	 {
+		 return "Value not found "+ movieid;
+	 }
+}
+
+
+public TitleEntity update(int movieid,TitleEntity en)
+{
+	 if(ti.existsById(movieid))
+	 {
+		 TitleEntity t=ti.findById(movieid).get();
+		 t.setTitle(en.getTitle());
+		 t.setGenre(en.getGenre());
+		 t.setRating(en.getRating());
+		 return ti.save(t);
+	 }
+	 return en;
+}
+
+public Page<TitleEntity>getdata(int page,int size)
+{
+	PageRequest obj=PageRequest.of(page, size);
+	return ti.findAll(obj);
+}
+public List<TitleEntity>start(String genre)
+   {
+	   return ti.findByGenreStartingWith(genre);
+   }
+public List<TitleEntity>end(String genre)
+   {
+	   return ti.findByGenreEndingWith(genre);
+   }
+
+public List<TitleEntity>containing(String genre)
+{
+   return ti.findByGenreContaining(genre);
+}
+public List<TitleEntity>notcontain(String genre)
+{
+   return ti.findByGenreNotContaining(genre);
+}
+
+}
