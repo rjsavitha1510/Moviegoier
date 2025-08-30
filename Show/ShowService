@@ -1,0 +1,77 @@
+package com.example.moviegoier.Service;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.moviegoier.Entity.ShowEntity;
+import com.example.moviegoier.Repository.ShowRepo;
+
+@Service
+public class ShowService {
+	@Autowired ShowRepo sh;
+	
+	public List<ShowEntity> show()
+	{
+		 return sh.findAll();
+	}
+	
+	public ShowEntity post(ShowEntity ent)
+	{
+		 return sh.save(ent);
+	}
+	
+	public String deleteid(int showtimeid)
+	{
+		 if(sh.existsById(showtimeid))
+		 {
+			 sh.deleteById(showtimeid);
+			 return "Value deleted successfully";
+		 }
+		 else
+		 {
+			 return "Value not found "+ showtimeid;
+		 }
+	}
+
+
+	public ShowEntity update(int showtimeid,ShowEntity en)
+	{
+		 if(sh.existsById(showtimeid))
+		 {
+			 ShowEntity tk=sh.findById(showtimeid).get();
+			 tk.setMovieid(en.getMovieid());
+			 tk.setScreenid(en.getScreenid());
+			 tk.setTime(en.getTime());
+			 return sh.save(tk);
+		 }
+		 return en;
+	}
+
+	public Page<ShowEntity>getdata(int page,int size)
+	{
+		PageRequest obj=PageRequest.of(page, size);
+		return sh.findAll(obj);
+	}
+	public List<ShowEntity>start(String screenid)
+	   {
+		   return sh.findByScreenidStartingWith(screenid);
+	   }
+	public List<ShowEntity>end(String screenid)
+	   {
+		   return sh.findByScreenidEndingWith(screenid);
+	   }
+	
+   public List<ShowEntity>containing(String screenid)
+   {
+	   return sh.findByScreenidContaining(screenid);
+   }
+   public List<ShowEntity>notcontain(String screenid)
+   {
+	   return sh.findByScreenidNotContaining(screenid);
+   }
+ 
+
+}
